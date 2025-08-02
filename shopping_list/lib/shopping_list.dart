@@ -87,48 +87,129 @@ class _ShoppingListState extends State<ShoppingList> {
         ),
         centerTitle: true,
         elevation: 4,
+        backgroundColor: Colors.purple,
+        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    buildRow("Ürün adı", "Örn: Süt", "Lütfen adınızı girin",
-                        _nameController),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    buildRow("Miktar", "2 kilo", "Lütfen müktarı giriniz",
-                        _quantityController),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Center(
-                      child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              addShopping();
-                            }
-                          },
-                          child: Text("Ekle")),
-                    )
-                  ],
-                )),
+            Card(
+              elevation: 3,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
+              margin: EdgeInsets.symmetric(horizontal: 8),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Text(
+                          "Yeni Ürün Ekle",
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.purple),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        buildRow("Ürün Adı:", "Örn: Süt",
+                            "Lütfen adınızı girin", _nameController),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        buildRow("Miktar   :", "2 kilo",
+                            "Lütfen müktarı giriniz", _quantityController),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        SizedBox(
+                          height: 40,
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                addShopping();
+                              }
+                            },
+                            label: const Text(
+                              "Ekle",
+                              style: TextStyle(fontSize: 18),
+                            ),
+                            icon: Icon(
+                              Icons.add_shopping_cart,
+                              color: Colors.white,
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.purple,
+                                foregroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12))),
+                          ),
+                        )
+                      ],
+                    )),
+              ),
+            ),
             Divider(
               height: 30,
+              color: Colors.purple,
             ),
             Expanded(
                 child: _list.isEmpty
-                    ? Center(
-                        child: Text("Alişveriş Listeniz Boş"),
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.add_shopping_cart_outlined,
+                            size: 80,
+                            color: Colors.purple,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Alışveriş listeniz boş",
+                            style:
+                                TextStyle(fontSize: 22, color: Colors.purple),
+                          )
+                        ],
                       )
                     : ListView.builder(
                         itemCount: _list.length,
                         itemBuilder: (context, index) {
-                          return Card();
+                          return Dismissible(
+                            key: Key(_list[index].name + index.toString()),
+                            direction: DismissDirection.endToStart,
+                            background: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerRight,
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                            ),
+                            onDismissed: (direction) {
+                              removeShopping(index);
+                            },
+                            child: ListTile(
+                              leading: Checkbox(
+                                  value: _list[index].isCheck,
+                                  onChanged: (bool? newValue) {
+                                    isTake(index);
+                                  }),
+                              title: Text(
+                                _list[index].name,
+                                style: TextStyle(
+                                    decoration: _list[index].isCheck
+                                        ? TextDecoration.lineThrough
+                                        : TextDecoration.none),
+                              ),
+                              subtitle: Text(_list[index].quantity),
+                            ),
+                          );
                         }))
           ],
         ),
@@ -139,16 +220,31 @@ class _ShoppingListState extends State<ShoppingList> {
   Row buildRow(String label1, String label2, String label3,
       TextEditingController controller) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label1),
+        Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: Text(
+            label1,
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+          ),
+        ),
         SizedBox(
           width: 10,
         ),
         Expanded(
           child: TextFormField(
             controller: controller,
-            decoration:
-                InputDecoration(hintText: label2, border: OutlineInputBorder()),
+            decoration: InputDecoration(
+                hintText: label2,
+                filled: true,
+                fillColor: Colors.purple[50],
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.purple)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.purple, width: 2))),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return label3;
