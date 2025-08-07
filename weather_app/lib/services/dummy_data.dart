@@ -2,7 +2,7 @@ import 'package:weather_app/models/Forecast.dart';
 import 'package:weather_app/models/weather.dart';
 
 Map<String, Weather> dummyWeaterData = {
-  "İstabbul": Weather(
+  "İstanbul": Weather(
       city: "İstanbul",
       temperature: 28,
       condition: "güneşli",
@@ -12,7 +12,7 @@ Map<String, Weather> dummyWeaterData = {
         Forecast(
             day: "Çarşamba", condition: "bulutlu", minTemp: 19, maxTemp: 26),
         Forecast(
-            day: "Perşembe", condition: "fırtınalı", minTemp: 17, maxTemp: 22),
+            day: "Perşembe", condition: "rüzgarlı", minTemp: 17, maxTemp: 22),
         Forecast(day: "Cuma", condition: "güneşli", minTemp: 20, maxTemp: 29),
         Forecast(
             day: "Cumartesi", condition: "güneşli", minTemp: 20, maxTemp: 29),
