@@ -26,6 +26,7 @@ class _HomeScreensState extends State<HomeScreens> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           DropdownButton(
             value: _selectedCity,
               items: dummyWeaterData.keys.map((city){
@@ -38,6 +39,7 @@ class _HomeScreensState extends State<HomeScreens> {
               }
           }),
           SizedBox(height: 16,),
+
           Text(weather.city,style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),),
           Text(weather.date,style: TextStyle(color: Colors.grey),),
           SizedBox(height: 8,),
@@ -51,7 +53,7 @@ class _HomeScreensState extends State<HomeScreens> {
               style: TextStyle(fontSize: 40),)
             ],
           ),
-          SizedBox(height: 24,),
+          Divider(height: 24,),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: weather.forecast.map((forecast){
@@ -77,15 +79,15 @@ class _HomeScreensState extends State<HomeScreens> {
 String getWeatherIcon(String condition){
   switch(condition){
     case 'güneşli':
-      return 'assets/sunny.jpg';
+      return 'assets/sunny1.png';
     case 'bulutlu':
-      return 'assets/cloudy.png';
+      return 'assets/cloudy1.png';
       case 'rüzgarlı':
-    return 'assets/stormy.png';
+    return 'assets/stormy1.png';
     case 'yağmurlu':
-    return 'assets/rainy.png';
+    return 'assets/rainy1.jpg';
     default:
-      return 'assets/cloudy.png';
+      return 'assets/cloudy1.png';
 
   }
 }
